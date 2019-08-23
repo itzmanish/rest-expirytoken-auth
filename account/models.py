@@ -4,7 +4,10 @@ from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager
 )
 from django.conf import settings
+from django.utils import timezone
 from django.core.validators import RegexValidator
+
+from rest_framework.authtoken.models import Token
 from . import identicon
 
 USERNAME_REGEX = '^[a-zA-Z0-9]+(?:[_]?[a-zA-Z0-9])*$'
@@ -16,30 +19,39 @@ def image_handler(instance, filename):
 
 
 class CustomUserManager(BaseUserManager):
-    def create_user(self, username, email, password=None):
+    def _create_user(self, username, email, password=None, **extra_fields):
 
         if not email:
             raise ValueError('User must have an email address')
 
         user = self.model(
             username=username,
-            email=email
+            email=email,
+            **extra_fields
         )
         user.set_password(password)
         user.set_identicon()
-        user.is_active = True
         user.save(using=self._db)
 
         return user
 
-    def create_superuser(self, username, email, password=None):
+    def create_user(self, username, email=None, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', False)
+        extra_fields.setdefault('is_admin', False)
+        extra_fields.setdefault('is_active', False)
+        return self._create_user(username, email, password, **extra_fields)
 
-        user = self.create_user(username, email, password=password)
-        user.is_admin = True
-        user.is_staff = True
-        user.save(using=self._db)
+    def create_superuser(self, username, email, password, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_admin', True)
+        extra_fields.setdefault('is_active', False)
 
-        return user
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_admin') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
+        return self._create_user(username, email, password, **extra_fields)
 
 
 class User(AbstractBaseUser):
@@ -87,3 +99,18 @@ class User(AbstractBaseUser):
         with open(file, 'wb') as f:
             f.write(avatar)
         self.avatar = f'avatar/user_{self.username}.png'
+
+
+class ExpiringToken(Token):
+
+    """Extend Token to add an expired method."""
+
+    class Meta(object):
+        proxy = True
+
+    def expired(self):
+        """Return boolean indicating token expiration."""
+        now = timezone.now()
+        if self.created < now - settings.TOKEN_EXPIRE_TIME:
+            return True
+        return False
