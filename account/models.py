@@ -1,8 +1,11 @@
+import os
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser, BaseUserManager
 )
+from django.conf import settings
 from django.core.validators import RegexValidator
+from . import identicon
 
 USERNAME_REGEX = '^[a-zA-Z0-9]+(?:[_]?[a-zA-Z0-9])*$'
 
@@ -23,6 +26,7 @@ class CustomUserManager(BaseUserManager):
             email=email
         )
         user.set_password(password)
+        user.set_identicon()
         user.is_active = True
         user.save(using=self._db)
 
@@ -76,10 +80,10 @@ class User(AbstractBaseUser):
         # I don't know what is it. so let it be true for now
         return True
 
-    # def set_identicon(self):
-    #     avatar = identicon.render(self.username)
-    #     upload_path = os.path.join(settings.MEDIA_ROOT, 'avatar')
-    #     file = f'{upload_path}/avatar_user_{self.username}.png'
-    #     with open(file, 'wb') as f:
-    #         f.write(avatar)
-    #     self.avatar = f'avatar/user_{self.username}.png'
+    def set_identicon(self):
+        avatar = identicon.render(self.username)
+        upload_path = os.path.join(settings.MEDIA_ROOT, 'avatar')
+        file = f'{upload_path}/avatar_user_{self.username}.png'
+        with open(file, 'wb') as f:
+            f.write(avatar)
+        self.avatar = f'avatar/user_{self.username}.png'
