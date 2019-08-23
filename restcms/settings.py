@@ -152,6 +152,10 @@ REST_REGISTRATION = {
     'USER_LOGIN_FIELDS': 'username',
     # 'VERIFICATION_SIGNER_USER_FIELD': 'username',
     'USER_VERIFICATION_ID_FIELD': 'username',
+    # 'REGISTER_VERIFICATION_EMAIL_TEMPLATES': {
+    #     'subject':  'account/email_subject.txt',
+    #     'html_body':  'account/email_body.html',
+    # }
 }
 
 # Email backend settings for Django
