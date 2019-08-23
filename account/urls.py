@@ -7,8 +7,8 @@ from rest_registration.api.views import (send_reset_password_link,
                                          )
 
 urlpatterns = [
-    path('login/', LoginView.as_view()),
-    path('logout/', LogoutView.as_view()),
+    path('login/', LoginView),
+    path('logout/', LogoutView),
     path('register/', register),
     path('verify-account/', verify_registration),
     path('reset/password/', reset_password),

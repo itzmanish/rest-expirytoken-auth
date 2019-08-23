@@ -22,7 +22,7 @@ class LoginSerializer(serializers.Serializer):
                 msg = 'Authentication failed'
                 raise exceptions.ValidationError(msg)
         else:
-            msg = 'Must provide and username both'
+            msg = 'Must provide username and username both'
             raise exceptions.ValidationError(msg)
         return data
 
