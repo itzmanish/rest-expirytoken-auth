@@ -21,7 +21,7 @@ def LoginView(request):
     serializer.is_valid(raise_exception=True)
     user = serializer.validated_data['user']
     django_login(request, user)
-    token, created = ExpiringToken.objects.get_or_create(user=user)
+    token, _ = ExpiringToken.objects.get_or_create(user=user)
     if token.expired():
         # If the token is expired, generate a new one.
         token.delete()
