@@ -1,16 +1,17 @@
-from django.contrib.auth import (
-    login as django_login,
-    logout as django_logout
-)
+from django.contrib.auth import login as django_login
+from django.contrib.auth import logout as django_logout
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.core.exceptions import ObjectDoesNotExist
-from rest_framework.response import Response
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.authentication import SessionAuthentication
-from account.models import ExpiringToken
+from rest_framework.decorators import (api_view, authentication_classes,
+                                       permission_classes)
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.response import Response
+
 from account.authentication import ExpiringTokenAuthentication
+from account.models import ExpiringToken
+
 from .serializer import LoginSerializer
 
 

@@ -1,5 +1,7 @@
-from rest_framework.authentication import TokenAuthentication, get_authorization_header
+from rest_framework.authentication import (TokenAuthentication,
+                                           get_authorization_header)
 from rest_framework.exceptions import AuthenticationFailed
+
 from .models import ExpiringToken
 
 

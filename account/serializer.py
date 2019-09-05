@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate
-from rest_framework import serializers, exceptions
+from rest_framework import exceptions, serializers
 
 
 class LoginSerializer(serializers.Serializer):

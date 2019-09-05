@@ -1,13 +1,11 @@
 from django.urls import path
-from .views import LoginView, LogoutView
-from rest_registration.api.views import (send_reset_password_link,
+
+from rest_registration.api.views import (profile, register, register_email,
                                          reset_password,
-                                         register,
-                                         verify_registration,
-                                         register_email,
-                                         verify_email,
-                                         profile
-                                         )
+                                         send_reset_password_link,
+                                         verify_email, verify_registration)
+
+from .views import LoginView, LogoutView
 
 urlpatterns = [
     path('login/', LoginView, name='login'),

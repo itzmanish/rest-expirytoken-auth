@@ -1,13 +1,12 @@
 import os
-from django.db import models
-from django.contrib.auth.models import (
-    AbstractBaseUser, BaseUserManager
-)
-from django.conf import settings
-from django.utils import timezone
-from django.core.validators import RegexValidator
 
+from django.conf import settings
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.core.validators import RegexValidator
+from django.db import models
+from django.utils import timezone
 from rest_framework.authtoken.models import Token
+
 from . import identicon
 
 USERNAME_REGEX = '^[a-zA-Z0-9]+(?:[_]?[a-zA-Z0-9])*$'
