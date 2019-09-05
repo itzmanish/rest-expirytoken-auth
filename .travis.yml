@@ -25,6 +25,7 @@ before_install:
 install:
   - pip install -r requirements.txt
   - pip install psycopg2 --quiet
+  - pip install codecov --quiet
 
 before_script:
   - psql -c "CREATE DATABASE restcms;" -U postgres
@@ -32,3 +33,7 @@ before_script:
 script:
   - python manage.py migrate
   - python manage.py test
+  - coverage run tests.py
+  # Push the results back to codecov
+after_success:
+  - codecov
