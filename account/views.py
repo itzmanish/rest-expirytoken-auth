@@ -14,7 +14,7 @@ from account.authentication import ExpiringTokenAuthentication
 from .serializer import LoginSerializer
 
 
-@api_view(['post'])
+@api_view(['POST'])
 @permission_classes([AllowAny])
 def LoginView(request):
     serializer = LoginSerializer(data=request.data)
@@ -31,8 +31,8 @@ def LoginView(request):
     return Response({'token': token.key}, status=200)
 
 
-@api_view(['post'])
-@authentication_classes([ExpiringTokenAuthentication, SessionAuthentication])
+@api_view(['POST'])
+@authentication_classes([ExpiringTokenAuthentication, ])
 @permission_classes([IsAuthenticated])
 def LogoutView(request):
     content = {

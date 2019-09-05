@@ -140,7 +140,7 @@ TOKEN_EXPIRE_TIME = timedelta(minutes=30)
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'account.authentication.ExpiringTokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
     ],
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
@@ -155,13 +155,14 @@ REST_FRAMEWORK = {
 
 REST_REGISTRATION = {
     'REGISTER_VERIFICATION_ENABLED': True,
-    'REGISTER_VERIFICATION_URL': 'https://frontend-host/verify-account/',
+    'REGISTER_VERIFICATION_URL': 'https://frontend-host/verify/',
     'RESET_PASSWORD_VERIFICATION_URL': 'https://frontend-host/reset-password/',
     'REGISTER_EMAIL_VERIFICATION_URL': 'https://frontend-host/verify-email/',
 
     'REGISTER_VERIFICATION_ONE_TIME_USE': True,
     'VERIFICATION_FROM_EMAIL': 'no-reply@example.com',
     'USER_LOGIN_FIELDS': 'username',
+    'SEND_RESET_PASSWORD_LINK_SERIALIZER_USE_EMAIL': True,
     # 'VERIFICATION_SIGNER_USER_FIELD': 'username',
     'USER_VERIFICATION_ID_FIELD': 'username',
     # 'REGISTER_VERIFICATION_EMAIL_TEMPLATES': {
